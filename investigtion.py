@@ -3,9 +3,22 @@ import pygame
 import threading
 import time
 import jeu_principal
+import sys
 
 # variable définissant l'événement du morceau sonore d'intro terminé
 INTRO_FINI = 23
+
+# La fonction son_fini nous permet de savoir à quel moment le morceau sonore est terminée grâce à
+# l'événement PAS_MUSIC
+def son_fini():
+    while True:
+        musique_finie = pygame.event.get(INTRO_FINI)
+        if musique_finie:
+            # Création de la fenêtre de jeu principal, exécution du jeu
+            jeu_principal.jeu_principal(fenetre_accueil)
+            break
+        else:
+            time.sleep(0.3)
 
 # La fonction jouer est exécutée lorsque le bouton jouer est cliqué
 def jouer():
@@ -28,19 +41,6 @@ def jouer():
     pygame.mixer.music.load("test.mp3")
     pygame.mixer.music.set_endevent(INTRO_FINI)
     pygame.mixer.music.play()
-
-    # La fonction son_fini nous permet de savoir à quel moment le morceau sonore est terminée grâce à
-    # l'événement PAS_MUSIC
-    def son_fini():
-        while True:
-            musique_finie = pygame.event.get(INTRO_FINI)
-            if musique_finie:
-                # détruire la fenêtre d'accueil
-                # Création de la fenêtre de jeu principal
-                jeu_principal.jeu_principal()
-                break;
-            else:
-                time.sleep(0.3)
 
     # Création d'un autre fil (thread) d'exécution pour attraper l'événement de fin de morceau sonore
     t = threading.Thread(target=son_fini)
@@ -66,9 +66,9 @@ titre_label = Label(cadre_accueil, text="INVESTIGATION", font=("Broadway", 35), 
 titre_label.pack()
 
 photo = PhotoImage(file="detective.png")
-canvas = Canvas(cadre_accueil, width=550, height=550, bg="white")
-canvas.create_image(0, 5, anchor=NW, image=photo)
-canvas.pack()
+canvas_photo = Canvas(cadre_accueil, width=550, height=550, bg="white")
+canvas_photo.create_image(0, 5, anchor=NW, image=photo)
+canvas_photo.pack()
 
 jouer_bouton = Button(cadre_accueil, width=20, height=5, text="JOUER", font=("calibri", 20), bg="light slate blue", command=jouer)
 jouer_bouton.pack()
