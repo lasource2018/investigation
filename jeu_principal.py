@@ -2,12 +2,15 @@ from tkinter import *
 import time
 import sys
 
+# définition de variables récurentes dans le code
 width=425
 height=650
 wraplength=215
 
-intervalle_temps = 200
+#définition de l'intervalle de temps entre l'affichage de chaque message (en ms)
+intervalle_temps = 2300
 
+#None permet de créer des variables sans aucune valeur pour pouvoir les utiliser plus tard
 fenetre_principal = None
 fenetre_demarrage = None
 fr=None
@@ -18,6 +21,7 @@ ligne_message=7
 
 message_a_afficher = 1
 
+#création d'un dictionnaire contenant toutes les réponses aux questions à choix
 liste_reponse={ 'r1' : 'Interroge sa mère pour savoir où il est allé en premier',
                 'r2' : 'Tente de trouver des indices dans sa chambre',
                 'r6' : 'Celui qui dit que Kevin est allé chez Pierre, un ami à lui dans une rue à droite',
@@ -38,6 +42,7 @@ liste_reponse={ 'r1' : 'Interroge sa mère pour savoir où il est allé en premi
 # variable stockant les réponses des boutons radios
 reponse_glob= ""
 
+#création d'un bouton rejouer pour recommencer le jeu
 def rejouer():
     global message_a_afficher, fr, reponse_canvas, fenetre_principal
     message_a_afficher = 1
@@ -45,26 +50,29 @@ def rejouer():
     supprimer_widget(reponse_canvas)
     fenetre_principal.after(250, affichage_dialogue)
 
+#création d'un bouton quitter pour quitter le jeu sans le recommencer
 def quitter():
     sys.exit(0)
 
+#création d'une fonction qui transforme une variable locale en variable globale
 def selectionner_reponse(rep):
     global reponse_glob
     reponse_glob = rep
 
+#destruction d'un widget
 def supprimer_widget(widget_parent):
     for widget in widget_parent.grid_slaves():
         widget.destroy()
 
-
+#création de la fonction pour répondre à l'énigme
 def traiter_reponse_enigme():
     global reponse_enigme, ligne_message, reponse_canvas, fenetre_principal, message_a_afficher, message_canvas
-    # en minuscule
+    # transforme tout ce que le joueur écrit en minuscule
     reponse = reponse_enigme.get().lower()
     # supprime les espaces avant et après un mot
     reponse = reponse.strip()
 
-    if reponse == "espoir" or reponse == "espérance" or reponse == "esperance" or reponse == "l'espoir":
+    if reponse == "espoir" or reponse == "espérance" or reponse == "esperance" or reponse == "l'espoir" or reponse == "l'espérance" or reponse == "l'esperance":
         #Enigme résolu
         #Label(fr, text=liste_reponse["enigme_resolu"], borderwidth=2, relief="ridge", bg="white", wraplength=wraplength).grid(row=ligne_message, column=0, sticky=W)
         #supprimer_widget(reponse_canvas)
@@ -81,17 +89,18 @@ def traiter_reponse_enigme():
     message_canvas.config(scrollregion=message_canvas.bbox("all"))
     message_canvas.yview_moveto(1)
 
+# traitement des réponses aux questions à choix
 def traiter_reponse():
     global reponse_glob, ligne_message, message_canvas, fr, reponse_enigme, reponse_canvas, message_a_afficher
     ligne_message += 1
     Label(fr, text=liste_reponse[reponse_glob], borderwidth=2, relief="ridge", bg="pale green", wraplength=wraplength).grid(row=ligne_message, column=1, sticky=E)
-    # Mis à jour des paramètres du canvas et du frame pour que le scrollbar s'affiche et fasse défiler les réponses
+    # Mise à jour des paramètres du canvas et du frame pour que le scrollbar s'affiche et fasse défiler les réponses
     message_canvas.create_window(0, 0, window=fr)
     fr.update_idletasks()
     message_canvas.config(scrollregion=message_canvas.bbox("all"))
     if  (reponse_glob == "r1"):
-        # Suite de dialogues entre Rose et Paul avant enigme
         message_a_afficher = 10
+        #lancement de l'intervalle de temps et affcihage de la réponse choisie par le joueur
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
 
     elif (reponse_glob == "r2"):
@@ -161,10 +170,12 @@ def traiter_reponse():
         message_a_afficher = 122
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
 
+# suite des messages du dialogue et des questions
 def affichage_dialogue():
     global message_a_afficher, message_canvas, reponse_canvas, fr, ligne_message, reponse_enigme
     # Premiers messages
     if message_a_afficher == 1:
+        # wraplenght permet de garder toujours la même largeur de canvas maximum (définie auparavant) quelle que soit la taille du texte
         Label(fr, text="Je vais t'aider Rose", borderwidth=2, relief="ridge", bg="pale green", wraplength=wraplength).grid(row=0, column=1, sticky=E)
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
         message_a_afficher += 1
@@ -177,7 +188,7 @@ def affichage_dialogue():
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
         message_a_afficher += 1
     elif message_a_afficher == 4:
-        Label(fr, text="haha oui... je pensais commencer par chez-lui ", borderwidth=2, relief="ridge", bg="white", wraplength=wraplength).grid(row=3, column=0, sticky=W)
+        Label(fr, text="haha oui... X-D je pensais commencer par chez-lui ", borderwidth=2, relief="ridge", bg="white", wraplength=wraplength).grid(row=3, column=0, sticky=W)
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
         message_a_afficher += 1
     elif message_a_afficher == 5:
@@ -313,7 +324,6 @@ def affichage_dialogue():
         radio1.grid(row=0, column=0)
         radio2.grid(row=0, column=1)
         okbutton = Button(reponse_canvas, text="OK", command=traiter_reponse)
-        # columnspan est un paramètre qui permet d'étendre le widget à plusieurs colonnes
         okbutton.grid(row=1, column=0, columnspan=2)
     elif message_a_afficher == 24:
         # PARTIE PERDUE
@@ -450,7 +460,7 @@ def affichage_dialogue():
         ligne_message += 1
         Label(fr, text="ça n'a pas été facile mais elle a fini par me parler. Elle savait que Calvin et Adam en voulait à Kevin et a donc voulu couvrir Adam au cas où il se passerait quelque chose. Mais elle n'imaginait pas qu'ils pourraient s'en prendre à lui... Quand je lui ai parlé, elle a réalisé la gravité de la situation. Elle m'a dit que Calvin et Adam avait parlé d'un hangard à 100 mètres d'ici", borderwidth=2, relief="ridge", bg="white", wraplength=wraplength).grid(row=ligne_message, column=0, sticky=W)
         message_a_afficher += 1
-        fenetre_principal.after(intervalle_temps, affichage_dialogue)
+        fenetre_principal.after(10000, affichage_dialogue)
     elif message_a_afficher == 116:
         #partie gagnée
         ligne_message += 1
@@ -511,10 +521,10 @@ def jeu_principal(fenetre_accueil):
 
     fenetre_principal.wm_minsize(width, height)
     #fenetre_principal.wm_maxsize(500, 600)
-    fenetre_principal.wm_title("Interface messages")
+    fenetre_principal.wm_title("Whats'up")
 
     #Afficher le nom du contact
-    nomContact = Label(fenetre_principal, text="Rose", bg="white")
+    nomContact = Label(fenetre_principal, text="Rose <3", bg="white")
     nomContact.grid(row=0, column=0)
 
     #création d'une barre de défilement

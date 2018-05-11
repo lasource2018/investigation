@@ -36,9 +36,8 @@ def jouer():
 
     pygame.init()
 
-    # chargement du morceau à jouer
-    #pygame.mixer.music.load("message vocal de rose2.mp3")
-    pygame.mixer.music.load("test.mp3")
+    #chargement du morceau à jouer
+    pygame.mixer.music.load("messageriePaul.mp3")
     pygame.mixer.music.set_endevent(INTRO_FINI)
     pygame.mixer.music.play()
 
@@ -53,7 +52,7 @@ fenetre_accueil = Tk()
 fenetre_accueil.configure(background="white")
 fenetre_accueil.wm_minsize(600, 700)
 fenetre_accueil.wm_maxsize(600, 700)
-fenetre_accueil.wm_title("Investigation")
+fenetre_accueil.wm_title("Menu")
 
 # création d'un cadre accueil
 cadre_accueil=Frame(fenetre_accueil, bg="white")
@@ -62,14 +61,17 @@ cadre_accueil.pack()
 # cadre pour la messagerie
 cadre_msg=Frame(fenetre_accueil)
 
-titre_label = Label(cadre_accueil, text="INVESTIGATION", font=("Broadway", 35), bg="white")
+#titre du jeu sur la page d'accueil
+titre_label = Label(cadre_accueil, text="Lookin' for Kevin", font=("Broadway", 35), bg="white")
 titre_label.pack()
 
+#insertion de la photo de la page d'accueil
 photo = PhotoImage(file="detective.png")
 canvas_photo = Canvas(cadre_accueil, width=550, height=550, bg="white")
 canvas_photo.create_image(0, 5, anchor=NW, image=photo)
 canvas_photo.pack()
 
+#création du bouton jouer
 jouer_bouton = Button(cadre_accueil, width=20, height=5, text="JOUER", font=("calibri", 20), bg="light slate blue", command=jouer)
 jouer_bouton.pack()
 
