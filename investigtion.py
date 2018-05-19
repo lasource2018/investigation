@@ -8,8 +8,7 @@ import sys
 # variable définissant l'événement du morceau sonore d'intro terminé
 INTRO_FINI = 23
 
-# La fonction son_fini nous permet de savoir à quel moment le morceau sonore est terminée grâce à
-# l'événement PAS_MUSIC
+# La fonction son_fini nous permet de savoir à quel moment le morceau sonore est terminée grâce à l'événement INTRO_FINI
 def son_fini():
     while True:
         musique_finie = pygame.event.get(INTRO_FINI)
