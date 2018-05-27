@@ -11,11 +11,11 @@ INTRO_FINI = 23
 # La fonction son_fini nous permet de savoir à quel moment le morceau sonore est terminée grâce à l'événement INTRO_FINI
 def son_fini():
     while True:
+        # on regarde dans la liste des événements de pygame s'il a reçu INTRO_FINI
         musique_finie = pygame.event.get(INTRO_FINI)
         if musique_finie:
             # Création de la fenêtre de jeu principal, exécution du jeu
             jeu_principal.jeu_principal(fenetre_accueil)
-            break
         else:
             time.sleep(0.3)
 
@@ -24,6 +24,7 @@ def jouer():
 
     # cache le cadre accueil
     cadre_accueil.pack_forget()
+    # je créé un objet PhotoImage avec mon image de messagerie
     messagerie = PhotoImage(file="messagerie2.png")
 
     canvas_messagerie = Canvas(cadre_msg, width=393, height=700)
@@ -33,18 +34,23 @@ def jouer():
     canvas_messagerie.pack()
     cadre_msg.pack()
 
+    # Initialisation du moteur de pygame
     pygame.init()
 
     #chargement du morceau à jouer
     pygame.mixer.music.load("messageriePaul.mp3")
+    # Quand le morceau est terminé, la variable INTRO_FINI va être ajoutée à la liste des événements
     pygame.mixer.music.set_endevent(INTRO_FINI)
+    # On joue le morceau de musique
     pygame.mixer.music.play()
 
     # Création d'un autre fil (thread) d'exécution pour attraper l'événement de fin de morceau sonore
     t = threading.Thread(target=son_fini)
     t.start()
 
-#début du corps principal du code
+# #####################################################
+# Début du programme
+# #####################################################
 
 # création de la fenêtre principale
 fenetre_accueil = Tk()
