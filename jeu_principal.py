@@ -59,9 +59,11 @@ def selectionner_reponse(rep):
     global reponse_glob
     reponse_glob = rep
 
-#destruction d'un widget
-def supprimer_widget(widget_parent):
-    for widget in widget_parent.grid_slaves():
+# suppression des widget enfant de widget_parent
+# Cela nous sert à supprimer les réponses des radios boutons et le bouton Ok associé, ou la zone de texte et le bouton associé
+def supprimer_widget(conteneur):
+    # Pour chaque widget se trouvant comme élément esclave du conteneur, supprime-le
+    for widget in conteneur.grid_slaves():
         widget.destroy()
 
 #création de la fonction pour répondre à l'énigme
@@ -94,10 +96,12 @@ def traiter_reponse():
     global reponse_glob, ligne_message, message_canvas, fr, reponse_enigme, reponse_canvas, message_a_afficher
     ligne_message += 1
     Label(fr, text=liste_reponse[reponse_glob], borderwidth=2, relief="ridge", bg="pale green", wraplength=wraplength).grid(row=ligne_message, column=1, sticky=E)
+
     # Mise à jour des paramètres du canvas et du frame pour que le scrollbar s'affiche et fasse défiler les réponses
     message_canvas.create_window(0, 0, window=fr)
     fr.update_idletasks()
     message_canvas.config(scrollregion=message_canvas.bbox("all"))
+
     if  (reponse_glob == "r1"):
         message_a_afficher = 10
         #lancement de l'intervalle de temps et affcihage de la réponse choisie par le joueur
@@ -180,7 +184,7 @@ def affichage_dialogue():
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
         message_a_afficher += 1
     elif message_a_afficher == 2:
-        Label(fr, text="Parfait. Tu es prêt à rester connecter avec moi 24h sur 24? ", borderwidth=2, relief="ridge", bg="white", wraplength=wraplength).grid(row=1, column=0, sticky=W)
+        Label(fr, text="Parfait. Tu es prêt à rester connecté avec moi 24h sur 24? ", borderwidth=2, relief="ridge", bg="white", wraplength=wraplength).grid(row=1, column=0, sticky=W)
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
         message_a_afficher += 1
     elif message_a_afficher == 3:
@@ -208,9 +212,8 @@ def affichage_dialogue():
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
         message_a_afficher += 1
     elif message_a_afficher == 9:
-        reponse = StringVar()
-        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r1"], variable=reponse, value="r1", command=lambda: selectionner_reponse("r1"), wraplength=wraplength)
-        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r2"], variable=reponse, value="r2", command=lambda: selectionner_reponse("r2"), wraplength=wraplength)
+        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r1"], value="r1", command=lambda: selectionner_reponse("r1"), wraplength=wraplength)
+        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r2"], value="r2", command=lambda: selectionner_reponse("r2"), wraplength=wraplength)
         radio1.select()
         selectionner_reponse("r1")
         radio2.deselect()
@@ -274,9 +277,8 @@ def affichage_dialogue():
         message_a_afficher +=1
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
     elif message_a_afficher == 19:
-        reponse = StringVar()
-        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r6"], variable=reponse, value="r1", command=lambda: selectionner_reponse("r6"), wraplength=wraplength)
-        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r7"], variable=reponse, value="r2", command=lambda: selectionner_reponse("r7"), wraplength=wraplength)
+        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r6"], value="r6", command=lambda: selectionner_reponse("r6"), wraplength=wraplength)
+        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r7"], value="r7", command=lambda: selectionner_reponse("r7"), wraplength=wraplength)
         radio1.select()
         selectionner_reponse("r6")
         radio2.deselect()
@@ -291,9 +293,8 @@ def affichage_dialogue():
         message_a_afficher += 1
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
     elif message_a_afficher == 21:
-        reponse = StringVar()
-        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r10"], variable=reponse, value="r1", command=lambda: selectionner_reponse("r10"), wraplength=wraplength)
-        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r11"], variable=reponse, value="r2", command=lambda: selectionner_reponse("r11"), wraplength=wraplength)
+        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r10"], value="r10", command=lambda: selectionner_reponse("r10"), wraplength=wraplength)
+        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r11"], value="r11", command=lambda: selectionner_reponse("r11"), wraplength=wraplength)
         radio1.select()
         selectionner_reponse("r10")
         radio2.deselect()
@@ -315,9 +316,8 @@ def affichage_dialogue():
         message_a_afficher += 1
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
     elif message_a_afficher == 23:
-        reponse = StringVar()
-        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r12"], variable=reponse, value="r1", command=lambda: selectionner_reponse("r12"), wraplength=wraplength)
-        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r13"], variable=reponse, value="r2", command=lambda: selectionner_reponse("r13"), wraplength=wraplength)
+        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r12"], value="r12", command=lambda: selectionner_reponse("r12"), wraplength=wraplength)
+        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r13"], value="r13", command=lambda: selectionner_reponse("r13"), wraplength=wraplength)
         radio1.select()
         selectionner_reponse("r12")
         radio2.deselect()
@@ -372,9 +372,8 @@ def affichage_dialogue():
         message_a_afficher += 1
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
     elif message_a_afficher == 103:
-        reponse = StringVar()
-        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r4"], variable=reponse, value="r1", command=lambda: selectionner_reponse("r4"), wraplength=wraplength)
-        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r5"], variable=reponse, value="r2", command=lambda: selectionner_reponse("r5"), wraplength=wraplength)
+        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r4"], value="r4", command=lambda: selectionner_reponse("r4"), wraplength=wraplength)
+        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r5"], value="r5", command=lambda: selectionner_reponse("r5"), wraplength=wraplength)
         radio1.select()
         selectionner_reponse("r4")
         radio2.deselect()
@@ -389,9 +388,8 @@ def affichage_dialogue():
         message_a_afficher += 1
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
     elif message_a_afficher == 105:
-        reponse = StringVar()
-        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r8"], variable=reponse, value="r1", command=lambda: selectionner_reponse("r8"), wraplength=wraplength)
-        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r9"], variable=reponse, value="r2", command=lambda: selectionner_reponse("r9"), wraplength=wraplength)
+        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r8"], value="r8", command=lambda: selectionner_reponse("r8"), wraplength=wraplength)
+        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r9"], value="r9", command=lambda: selectionner_reponse("r9"), wraplength=wraplength)
         radio1.select()
         selectionner_reponse("r8")
         radio2.deselect()
@@ -416,9 +414,8 @@ def affichage_dialogue():
         message_a_afficher += 1
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
     elif message_a_afficher== 109:
-        reponse = StringVar()
-        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r14"], variable=reponse, value="r1", command=lambda: selectionner_reponse("r14"), wraplength=wraplength)
-        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r15"], variable=reponse, value="r2", command=lambda: selectionner_reponse("r15"), wraplength=wraplength)
+        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r14"], value="r14", command=lambda: selectionner_reponse("r14"), wraplength=wraplength)
+        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r15"], value="r15", command=lambda: selectionner_reponse("r15"), wraplength=wraplength)
         radio1.select()
         selectionner_reponse("r14")
         radio2.deselect()
@@ -492,9 +489,8 @@ def affichage_dialogue():
         message_a_afficher += 1
         fenetre_principal.after(intervalle_temps, affichage_dialogue)
     elif message_a_afficher == 121:
-        reponse = StringVar()
-        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r16"], variable=reponse, value="r1", command=lambda: selectionner_reponse("r16"), wraplength=wraplength)
-        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r17"], variable=reponse, value="r2", command=lambda: selectionner_reponse("r17"), wraplength=wraplength)
+        radio1 = Radiobutton(reponse_canvas, text=liste_reponse["r16"], value="r16", command=lambda: selectionner_reponse("r16"), wraplength=wraplength)
+        radio2 = Radiobutton(reponse_canvas, text=liste_reponse["r17"], value="r17", command=lambda: selectionner_reponse("r17"), wraplength=wraplength)
         radio1.select()
         selectionner_reponse("r16")
         radio2.deselect()
@@ -553,7 +549,7 @@ def jeu_principal(fenetre_accueil):
     reponse_canvas = Canvas(fenetre_principal, width=width, height=100)
     reponse_canvas.grid(row=2, column=0)
 
-    # affichage des messages après 500ms
+    # affichage des messages après 250ms
     fenetre_principal.after(250, affichage_dialogue)
 
     fenetre_principal.mainloop()
